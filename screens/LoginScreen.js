@@ -9,8 +9,27 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
+import * as AppAuth from "expo-app-auth";
 
 const LoginScreen = () => {
+  const authenticate = async () => {
+    const config = {
+      issuer: "https://accounts.spotify.com",
+      clientId: "a2d11a864d404aaaac1b76f6c5aa1b0d",
+      scopes: [
+        "user-read-email",
+        "user-library-read",
+        "user-read-recently-played",
+        "user-top-read",
+        "playlist-read-private",
+        "playlist-read-collaborative",
+        "playlist-modify-public",
+      ],
+      redirectUrl: "exp://192.168.1.10:19000/--/spotify-auth-callback",
+    };
+    const result = await AppAuth.authAsync(config);
+    console.log(result);
+  };
   return (
     <LinearGradient colors={["#040306", "#131624"]} style={{ flex: 1 }}>
       <SafeAreaView>
@@ -36,6 +55,7 @@ const LoginScreen = () => {
         </Text>
         <View style={{ height: 80 }} />
         <Pressable
+          onPress={authenticate}
           style={{
             backgroundColor: "#1DB954",
             padding: 10,
